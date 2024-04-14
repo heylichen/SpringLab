@@ -1,7 +1,7 @@
 package spring.lab.annotation;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import spring.lab.annotation.config.AppConfig;
+import spring.lab.AppConfig;
 
 public class Driver {
   public static void main(String[] args) {
