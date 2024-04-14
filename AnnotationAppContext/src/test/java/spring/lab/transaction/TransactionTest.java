@@ -1,5 +1,6 @@
 package spring.lab.transaction;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import spring.lab.AppConfig;
@@ -11,58 +12,68 @@ import java.util.List;
 import java.util.Set;
 
 public class TransactionTest {
+  private final Set<Integer> USER_IDS = new HashSet<>(Arrays.asList(1, 2));
+  private UserService userService;
+
+  @Before
+  public void setUp() {
+    AnnotationConfigApplicationContext appContext = new AnnotationConfigApplicationContext(AppConfig.class);
+    userService = appContext.getBean("userService", UserService.class);
+    initData(USER_IDS);
+    System.out.println("init data ... ");
+    listUserAccounts(USER_IDS);
+  }
 
   @Test
-  public void testTransactionTemplate() {
-//context refresh
-    AnnotationConfigApplicationContext appContext = new AnnotationConfigApplicationContext(AppConfig.class);
-
-    UserService userService = appContext.getBean("userService", UserService.class);
-
-    Set<Integer> userIds = new HashSet<>(Arrays.asList(1, 2));
-    initData(userService, userIds);
-    System.out.println("before transfer");
-    listUserAccounts(userService, userIds);
-
+  public void testTransactionManager() {
     BigDecimal delta = new BigDecimal(10);
     try {
-      //关注这个方法
       userService.transferByTm(1, 2, delta);
     } finally {
       System.out.println("after transfer " + delta);
-      listUserAccounts(userService, userIds);
+      listUserAccounts(USER_IDS);
     }
   }
 
   @Test
   public void testTransactionManagerRollback() {
-//context refresh
-    AnnotationConfigApplicationContext appContext = new AnnotationConfigApplicationContext(AppConfig.class);
-
-    UserService userService = appContext.getBean("userService", UserService.class);
-
-    Set<Integer> userIds = new HashSet<>(Arrays.asList(1, 2));
-    initData(userService, userIds);
-    System.out.println("before transfer");
-    listUserAccounts(userService, userIds);
-
     BigDecimal delta = new BigDecimal(10);
     try {
-      //关注这个方法
       userService.transferByTm(1, 3, delta);
     } finally {
       System.out.println("after transfer " + delta);
-      listUserAccounts(userService, userIds);
+      listUserAccounts(USER_IDS);
     }
   }
 
+  @Test
+  public void testTransactionTemplate() {
+    BigDecimal delta = new BigDecimal(10);
+    try {
+      userService.transferByTemplate(1, 2, delta);
+    } finally {
+      System.out.println("after transfer " + delta);
+      listUserAccounts(USER_IDS);
+    }
+  }
 
-  private static void initData(UserService userService, Set<Integer> userIds) {
+  @Test
+  public void testTransactionTemplateRollback() {
+    BigDecimal delta = new BigDecimal(10);
+    try {
+      userService.transferByTemplate(1, 3, delta);
+    } finally {
+      System.out.println("after transfer " + delta);
+      listUserAccounts(USER_IDS);
+    }
+  }
+
+  private void initData(Set<Integer> userIds) {
     userService.deleteByUserIds(userIds);
     userIds.forEach((id -> userService.insert(id, new BigDecimal(100))));
   }
 
-  private static void listUserAccounts(UserService userService, Set<Integer> userIds) {
+  private void listUserAccounts(Set<Integer> userIds) {
     List<UserAccount> accounts = userService.queryByUserIds(userIds);
     StringBuilder sb = new StringBuilder();
     for (UserAccount account : accounts) {
