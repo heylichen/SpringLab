@@ -60,6 +60,10 @@ public class UserDao {
     jdbcTemplate.update("insert into user_account(user_id,balance) values(?,?)", userId, balance);
   }
 
+  public void update(Integer userId, BigDecimal balance) {
+    jdbcTemplate.update("update user_account set balance = ? where user_id=?", balance, userId);
+  }
+
   public void transfer(Integer userAId, Integer userBId, BigDecimal delta) {
     addBalance(userAId, delta.negate());
     addBalance(userBId, delta);
