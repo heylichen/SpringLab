@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 public class AnnotatedTransactionTest {
-  private final Set<Integer> USER_IDS = new HashSet<>(Arrays.asList(1, 2, 3));
+  private final Set<Integer> USER_IDS = new HashSet<>(Arrays.asList(1, 2, 3,4));
   private AnnotatedUserService userService;
   private UserDao userDao;
   @Before
@@ -26,9 +26,64 @@ public class AnnotatedTransactionTest {
   }
 
   @Test
-  public void testTransactionManager() {
+  public void testGlobalRollback() {
     try{
-      userService.transferOuter();
+      userService.globalRollback();
+    } finally {
+      listUserAccounts(USER_IDS);
+    }
+  }
+
+  @Test
+  public void innerRequiredRollback() {
+    try{
+      userService.innerRequiredRollback();
+    } finally {
+      listUserAccounts(USER_IDS);
+    }
+  }
+
+  @Test
+  public void innerRequiresNewRollback() {
+    try{
+      userService.innerRequiresNewRollback();
+    } finally {
+      listUserAccounts(USER_IDS);
+    }
+  }
+
+  @Test
+  public void innerNestedRollback() {
+    try{
+      userService.innerNestedRollback();
+    } finally {
+      listUserAccounts(USER_IDS);
+    }
+  }
+
+
+  @Test
+  public void catchInnerRequiredRollback() {
+    try{
+      userService.catchInnerRequiredRollback();
+    } finally {
+      listUserAccounts(USER_IDS);
+    }
+  }
+
+  @Test
+  public void catchInnerRequiresNewRollback() {
+    try{
+      userService.catchInnerRequiresNewRollback();
+    } finally {
+      listUserAccounts(USER_IDS);
+    }
+  }
+
+  @Test
+  public void catchInnerNestedRollback() {
+    try{
+      userService.catchInnerNestedRollback();
     } finally {
       listUserAccounts(USER_IDS);
     }
