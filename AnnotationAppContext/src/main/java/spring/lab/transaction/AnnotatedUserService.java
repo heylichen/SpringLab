@@ -1,9 +1,13 @@
 package spring.lab.transaction;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationAdapter;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.math.BigDecimal;
 
@@ -27,7 +31,32 @@ public class AnnotatedUserService {
   @Autowired
   private UserDao userDao;
   @Autowired
+
   private AnnotatedUserService self;
+  @Transactional(propagation = Propagation.REQUIRED)
+  public void afterCommit() {
+    TransactionSynchronizationManager.registerSynchronization(newSynchronization());
+    self.innerRequired(false);
+  }
+  @Transactional(propagation = Propagation.REQUIRED)
+  public void afterRollback() {
+    TransactionSynchronizationManager.registerSynchronization(newSynchronization());
+    self.innerRequired(true);
+  }
+
+  private TransactionSynchronization newSynchronization() {
+    return new TransactionSynchronizationAdapter() {
+      @Override
+      public void afterCommit() {
+        System.out.println("---> afterCommit");
+      }
+
+      @Override
+      public void afterCompletion(int status) {
+        System.out.println("---> afterCompletion, status=" + status);
+      }
+    };
+  }
 
   @Transactional(propagation = Propagation.REQUIRED)
   public void globalRollback() {

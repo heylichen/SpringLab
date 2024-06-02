@@ -89,6 +89,26 @@ public class AnnotatedTransactionTest {
     }
   }
 
+
+  @Test
+  public void testAfterCommit() {
+    try{
+      userService.afterCommit();
+    } finally {
+      listUserAccounts(USER_IDS);
+    }
+  }
+
+
+  @Test
+  public void testAfterRollback() {
+    try{
+      userService.afterRollback();
+    } finally {
+      listUserAccounts(USER_IDS);
+    }
+  }
+
   private void initData(Set<Integer> userIds) {
     userDao.deleteByUserIds(userIds);
     userIds.forEach((id -> userDao.insert(id, new BigDecimal(100))));
