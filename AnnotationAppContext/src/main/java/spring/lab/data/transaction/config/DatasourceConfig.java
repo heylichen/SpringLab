@@ -1,4 +1,4 @@
-package spring.lab.transaction.config;
+package spring.lab.data.transaction.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

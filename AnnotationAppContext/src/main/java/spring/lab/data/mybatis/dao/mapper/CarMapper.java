@@ -1,8 +1,8 @@
-package spring.lab.mybatis.dao.mapper;
+package spring.lab.data.mybatis.dao.mapper;
 
 
 import org.apache.ibatis.annotations.Param;
-import spring.lab.mybatis.dao.Car;
+import spring.lab.data.mybatis.dao.Car;
 
 import java.util.Collection;
 import java.util.List;

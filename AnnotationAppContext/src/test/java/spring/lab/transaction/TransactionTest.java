@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import spring.lab.AppConfig;
+import spring.lab.data.transaction.UserAccount;
+import spring.lab.data.transaction.UserService;
 
 import java.math.BigDecimal;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package spring.lab.mybatis.dao;
+package spring.lab.data.mybatis.dao;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

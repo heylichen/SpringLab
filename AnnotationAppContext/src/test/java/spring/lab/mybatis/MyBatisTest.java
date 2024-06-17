@@ -8,9 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import spring.lab.AppConfig;
-import spring.lab.mybatis.dao.Car;
-import spring.lab.mybatis.dao.mapper.CarMapper;
-import spring.lab.mybatis.service.CarDbService;
+import spring.lab.data.mybatis.dao.Car;
+import spring.lab.data.mybatis.dao.mapper.CarMapper;
+import spring.lab.data.mybatis.service.CarDbService;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

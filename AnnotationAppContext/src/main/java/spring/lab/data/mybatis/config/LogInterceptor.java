@@ -1,4 +1,4 @@
-package spring.lab.mybatis.config;
+package spring.lab.data.mybatis.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.executor.statement.StatementHandler;

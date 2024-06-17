@@ -1,9 +1,9 @@
-package spring.lab.mybatis.service;
+package spring.lab.data.mybatis.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import spring.lab.mybatis.dao.Car;
-import spring.lab.mybatis.dao.mapper.CarMapper;
+import spring.lab.data.mybatis.dao.Car;
+import spring.lab.data.mybatis.dao.mapper.CarMapper;
 
 import java.util.Collection;
 import java.util.List;

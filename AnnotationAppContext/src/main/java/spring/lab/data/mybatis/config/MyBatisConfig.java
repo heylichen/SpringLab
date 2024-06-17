@@ -1,8 +1,7 @@
-package spring.lab.mybatis.config;
+package spring.lab.data.mybatis.config;
 
 import org.apache.ibatis.logging.slf4j.Slf4jImpl;
 import org.apache.ibatis.plugin.Interceptor;
-import org.apache.ibatis.plugin.Plugin;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;

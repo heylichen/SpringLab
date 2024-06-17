@@ -1,4 +1,4 @@
-package spring.lab.transaction;
+package spring.lab.data.transaction;
 
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
