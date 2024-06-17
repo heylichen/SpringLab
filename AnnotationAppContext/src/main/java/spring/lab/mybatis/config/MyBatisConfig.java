@@ -1,6 +1,8 @@
 package spring.lab.mybatis.config;
 
 import org.apache.ibatis.logging.slf4j.Slf4jImpl;
+import org.apache.ibatis.plugin.Interceptor;
+import org.apache.ibatis.plugin.Plugin;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -46,6 +48,11 @@ public class MyBatisConfig {
     config.setLogImpl(Slf4jImpl.class);
     config.setLogPrefix("dao.");
     factory.setConfiguration(config);
+
+    Interceptor[] plugins = new Interceptor[]{
+        new LogInterceptor()
+    };
+    factory.setPlugins(plugins);
     return factory;
   }
 

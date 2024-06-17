@@ -1,7 +1,7 @@
 package spring.lab.mybatis;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.ParamNameResolver;
-import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Before;
@@ -16,24 +16,15 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class MyBatisTest {
   private List<Car> cars;
   private List<String> carNos;
-
-  private CarDbService carDbService;
-  private SqlSessionFactory sqlSessionFactory;
-  private Configuration configuration;
-  private ParamNameResolver carMapperPageQueryPR;
+  private AnnotationConfigApplicationContext appContext;
 
   @Before
   public void setUp() throws NoSuchMethodException {
-    AnnotationConfigApplicationContext appContext = new AnnotationConfigApplicationContext(AppConfig.class);
-    carDbService = appContext.getBean(CarDbService.class);
-    sqlSessionFactory = appContext.getBean(SqlSessionFactory.class);
-    configuration = sqlSessionFactory.getConfiguration();
-    Method pageQueryMethod = CarMapper.class.getDeclaredMethod("pageQuery", Integer.class, Integer.class);
-    carMapperPageQueryPR = new ParamNameResolver(configuration, pageQueryMethod);
-    System.out.println(pageQueryMethod.getName());
+    appContext = new AnnotationConfigApplicationContext(AppConfig.class);
     //prepare test data
     carNos = new ArrayList<>();
     cars = new ArrayList<>();
@@ -42,10 +33,12 @@ public class MyBatisTest {
       carNos.add(carNo);
       cars.add(new Car(carNo));
     }
+    log.info("init data: {}", carNos);
   }
 
   @Test
-  public void testMapperApi() {
+  public void testTxMapperApi() {
+    CarDbService carDbService = appContext.getBean(CarDbService.class);
     carDbService.deleteByCarNos(carNos);
     carDbService.insert(cars);
     System.out.println();
@@ -55,16 +48,35 @@ public class MyBatisTest {
   }
 
   @Test
-  public void testMyBatisSessionApi() {
+  public void testMapperApi() {
+    CarMapper carMapper = appContext.getBean(CarMapper.class);
+    carMapper.deleteByCarNos(carNos);
+    carMapper.insert(cars);
+
+    List<Car> page = carMapper.pageQuery(10, 10);
+    viewCarNos(page);
+  }
+
+  @Test
+  public void testMyBatisSessionApi() throws NoSuchMethodException {
+    SqlSessionFactory sqlSessionFactory = appContext.getBean(SqlSessionFactory.class);
+    Method mapperMethod = CarMapper.class.getDeclaredMethod("pageQuery", Integer.class, Integer.class);
+    ParamNameResolver pnr = new ParamNameResolver(sqlSessionFactory.getConfiguration(), mapperMethod);
+
     int limit = 10;
     int offset = 10;
-    // ParamNameResolver carMapperPageQueryPR
-    Object param = carMapperPageQueryPR.getNamedParams(new Object[]{limit, offset});
+    Object[] queryArgs = new Object[]{offset, limit};
 
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       //sqlSession API accept only single parameter object, so need to convert if we have multiple args.
+      Object param = pnr.getNamedParams(queryArgs);
       List<Car> page = sqlSession.selectList("spring.lab.mybatis.dao.mapper.CarMapper.pageQuery", param);
-      System.out.println();
+      viewCarNos(page);
     }
+  }
+
+  private void viewCarNos(List<Car> page) {
+    List<String> carNos = page.stream().map(Car::getCarNo).toList();
+    System.out.println(String.join(", ", carNos));
   }
 }

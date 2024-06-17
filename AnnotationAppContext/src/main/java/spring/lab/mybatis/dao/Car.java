@@ -20,6 +20,5 @@ public class Car implements Serializable {
     public Car(String carNo) {
         this.carNo = carNo;
     }
-
     private static final long serialVersionUID = 1L;
 }
