@@ -1,5 +1,7 @@
 package spring.lab.data.transaction.config;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,14 +21,24 @@ public class DatasourceConfig {
   private String username;
   @Value("${spring.datasource.springLab.password}")
   private String password;
+//
+//  @Bean
+//  public DataSource dataSource() {
+//    DriverManagerDataSource ds = new DriverManagerDataSource();
+//    ds.setDriverClassName(driver);
+//    ds.setUrl(url);
+//    ds.setUsername(username);
+//    ds.setPassword(password);
+//    return ds;
+//  }
 
   @Bean
   public DataSource dataSource() {
-    DriverManagerDataSource ds = new DriverManagerDataSource();
-    ds.setDriverClassName(driver);
-    ds.setUrl(url);
-    ds.setUsername(username);
-    ds.setPassword(password);
+    HikariConfig config = new HikariConfig();
+    config.setJdbcUrl(url);
+    config.setUsername(username);
+    config.setPassword(password);
+    HikariDataSource ds = new HikariDataSource(config);
     return ds;
   }
 

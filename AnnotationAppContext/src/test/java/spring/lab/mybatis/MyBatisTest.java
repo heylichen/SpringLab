@@ -70,7 +70,7 @@ public class MyBatisTest {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       //sqlSession API accept only single parameter object, so need to convert if we have multiple args.
       Object param = pnr.getNamedParams(queryArgs);
-      List<Car> page = sqlSession.selectList("spring.lab.mybatis.dao.mapper.CarMapper.pageQuery", param);
+      List<Car> page = sqlSession.selectList("spring.lab.data.mybatis.dao.mapper.CarMapper.pageQuery", param);
       viewCarNos(page);
     }
   }

@@ -64,5 +64,9 @@
             <artifactId>mybatis-spring</artifactId>
             <version>2.1.2</version>
         </dependency>
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+        </dependency>
     </dependencies>
 </project>
