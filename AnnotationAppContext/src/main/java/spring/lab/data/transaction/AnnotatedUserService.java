@@ -70,7 +70,7 @@ public class AnnotatedUserService {
     throw new IllegalArgumentException("exception thrown ");
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.REQUIRED, transactionManager = "dataSourceTransactionManager")
   public void innerRequiredRollback() {
     //回滚
     userDao.update(4, new BigDecimal(1000));

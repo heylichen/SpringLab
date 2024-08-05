@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 public class AnnotatedTransactionTest {
-  private final Set<Integer> USER_IDS = new HashSet<>(Arrays.asList(1, 2, 3,4));
+  private final Set<Integer> USER_IDS = new HashSet<>(Arrays.asList(1, 2, 3, 4));
   private AnnotatedUserService userService;
   private UserDao userDao;
   @Before
@@ -30,7 +30,7 @@ public class AnnotatedTransactionTest {
 
   @Test
   public void testGlobalRollback() {
-    try{
+    try {
       userService.globalRollback();
     } finally {
       listUserAccounts(USER_IDS);
@@ -39,7 +39,7 @@ public class AnnotatedTransactionTest {
 
   @Test
   public void innerRequiredRollback() {
-    try{
+    try {
       userService.innerRequiredRollback();
     } finally {
       listUserAccounts(USER_IDS);
@@ -48,7 +48,7 @@ public class AnnotatedTransactionTest {
 
   @Test
   public void innerRequiresNewRollback() {
-    try{
+    try {
       userService.innerRequiresNewRollback();
     } finally {
       listUserAccounts(USER_IDS);
@@ -57,7 +57,7 @@ public class AnnotatedTransactionTest {
 
   @Test
   public void innerNestedRollback() {
-    try{
+    try {
       userService.innerNestedRollback();
     } finally {
       listUserAccounts(USER_IDS);
@@ -67,7 +67,7 @@ public class AnnotatedTransactionTest {
 
   @Test
   public void catchInnerRequiredRollback() {
-    try{
+    try {
       userService.catchInnerRequiredRollback();
     } finally {
       listUserAccounts(USER_IDS);
@@ -76,7 +76,7 @@ public class AnnotatedTransactionTest {
 
   @Test
   public void catchInnerRequiresNewRollback() {
-    try{
+    try {
       userService.catchInnerRequiresNewRollback();
     } finally {
       listUserAccounts(USER_IDS);
@@ -85,7 +85,7 @@ public class AnnotatedTransactionTest {
 
   @Test
   public void catchInnerNestedRollback() {
-    try{
+    try {
       userService.catchInnerNestedRollback();
     } finally {
       listUserAccounts(USER_IDS);
@@ -95,7 +95,7 @@ public class AnnotatedTransactionTest {
 
   @Test
   public void testAfterCommit() {
-    try{
+    try {
       userService.afterCommit();
     } finally {
       listUserAccounts(USER_IDS);
@@ -105,7 +105,7 @@ public class AnnotatedTransactionTest {
 
   @Test
   public void testAfterRollback() {
-    try{
+    try {
       userService.afterRollback();
     } finally {
       listUserAccounts(USER_IDS);

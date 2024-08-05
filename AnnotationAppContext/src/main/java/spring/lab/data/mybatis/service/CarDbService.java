@@ -2,6 +2,7 @@ package spring.lab.data.mybatis.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import spring.lab.data.mybatis.dao.Car;
 import spring.lab.data.mybatis.dao.mapper.CarMapper;
 
@@ -23,5 +24,10 @@ public class CarDbService {
 
   public void deleteByCarNos(Collection<String> carNos) {
     carMapper.deleteByCarNos(carNos);
+  }
+
+  @Transactional
+  public void insert2(Collection<Car> cars) {
+    carMapper.insert(cars);
   }
 }
